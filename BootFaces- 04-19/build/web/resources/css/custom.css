@@ -1,0 +1,57 @@
+  .colorgraph {
+  height: 5px;
+  border-top: 0;
+  background: #c4e17f;
+  border-radius: 5px;
+  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+}
+#grad1 {
+    height: 200px;
+   background: -webkit-linear-gradient(top, rgb(5,5,5) 0%,rgb(3,3,3) 0%,rgb(167,0,0) 0%,rgb(182,0,0) 0%,rgb(191,0,0) 1%,rgb(199,0,0) 1%,rgb(194,0,0) 7%,rgb(163,0,0) 28%,rgb(153,0,0) 39%,rgb(243,222,221) 39%,rgb(255,255,251) 40%,rgb(254,255,255) 40%,rgb(255,253,255) 40%,rgb(252,255,253) 40%,rgb(255,254,253) 40%,rgb(160,160,160) 40%,rgb(173,173,173) 41%,rgb(200,200,200) 41%,rgb(214,214,214) 41%,rgb(214,214,214) 100%); /* Chrome10-25,Safari5.1-6 */
+   background: linear-gradient(to bottom, rgb(5,5,5) 0%,rgb(3,3,3) 0%,rgb(167,0,0) 0%,rgb(182,0,0) 0%,rgb(191,0,0) 1%,rgb(199,0,0) 1%,rgb(194,0,0) 7%,rgb(163,0,0) 28%,rgb(153,0,0) 39%,rgb(243,222,221) 39%,rgb(255,255,251) 40%,rgb(254,255,255) 40%,rgb(255,253,255) 40%,rgb(252,255,253) 40%,rgb(255,254,253) 40%,rgb(160,160,160) 40%,rgb(173,173,173) 41%,rgb(200,200,200) 41%,rgb(214,214,214) 41%,rgb(214,214,214) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+   }
+   .login-form {
+	margin-top: 5px;
+}
+
+.form {
+	color: #5d5d5d;
+	background: #f2f2f2;
+	padding: 22px;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+	form img {
+		display: block;
+		margin: 0 auto;
+		margin-bottom: 35px;
+	}
+	form input,
+	form button {
+		font-size: 18px;
+		margin: 16px 0;
+	}
+	form > div {
+		text-align: center;
+	}
+	
+.form-links {
+	text-align: center;
+	margin-top: 1em;
+	margin-bottom: 50px;
+}
+	.form-links a {
+		color: #337ab;
+	}
+        .capitalized {
+    text-transform: capitalize;
+}
+
+body  {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}

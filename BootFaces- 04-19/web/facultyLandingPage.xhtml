@@ -1,0 +1,943 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:jp="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Faculty Home Page</title>
+
+        <link rel="shortcut icon" href="http://iguides.illinoisstate.edu/favIcon/favicon.ico" type="image/x-icon"/>
+        <!-- Bootstrap 
+        <link href="css/bootstrap.min.css" rel="stylesheet">-->
+        <link href="./resources/css/custom.css" rel="stylesheet" />
+        <!-- Custom styles for this template -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" />
+        <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.11/sorting/numeric-comma.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"  />
+        <!-- Latest compiled and minified JavaScript -->
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
+
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" />
+
+        <link rel="stylesheet" type="text/css" href="https://my.illinoisstate.edu/responsive.css?v=2"/>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+        <script type="text/javascript" >
+            $(document).ready(function () {
+                $('#scheduleTable').DataTable();
+                $('#prefTable').DataTable();
+                $('#prefTable2').DataTable();
+
+                $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+                    localStorage.setItem('activeTab', $(e.target).attr('href'));
+                });
+                var activeTab = localStorage.getItem('activeTab');
+                if (activeTab) {
+                    $('#myTab a[href="' + activeTab + '"]').tab('show');
+                }
+
+            });
+
+
+            function logout() {
+                localStorage.removeItem('activeTab');
+                localStorage.clear();
+                window.onbeforeunload = function () {
+                    localStorage.clear();
+                }
+            }
+
+            function invokeGetSchedule() {
+                //var jsfCommandLink = document.getElementById("j_idt10:form:getSchBtn");
+                // var jsfCommandLink = document.querySelector('a[id$="form:getScheduleButton"]').id;
+                var jsfCommandLink = document.querySelector(".getSchedule");
+                jsfCommandLink.click();
+                document.getElementById('status').innerHTML = "";
+
+            }
+            function invokePreferences() {
+
+                var jsfCommandLink = document.querySelector(".checkPreferences");
+                jsfCommandLink.click();
+                var jsfCommandLink1 = document.querySelector(".getPreferences");
+                jsfCommandLink1.click();
+                document.getElementById('status').innerHTML = "";
+
+
+            }
+            function hideScheduleDiv() {
+                document.getElementById('scheduleDiv').style.display = "none";
+                document.getElementById('scheduleButtonDiv').style.display = "block";
+            }
+            function showScheduleDiv() {
+                var status = document.getElementById('scheduleDiv').style.display;
+                if (status === 'none')
+                {
+                    document.getElementById('scheduleDiv').style.display = "block";
+                    document.getElementById('scheduleButtonDiv').style.display = "none";
+                } else
+                {
+                    alert("not hidden");
+                    document.getElementById('scheduleDiv').style.display = "none";
+                    document.getElementById('scheduleButtonDiv').style.display = "block";
+                }
+            }
+            function showAddCoursePrefDiv() {
+
+                document.getElementById('addCoursePrefDiv').style.display = "block";
+            }
+
+            function submitForm() {
+                var activeSel = document.getElementById('changeReportViewForm:reportTypeId');
+                var selection = activeSel.options[activeSel.selectedIndex].text;
+                $('.sel').hide();
+                $('#' + selection).show();
+            }
+        </script>
+    </h:head>
+    <h:body style="padding-top: 0px"  id="grad1">
+
+        <div class="container">
+            <nav style="height: 30px;">
+                <script src="//iguides.illinoisstate.edu"> </script>
+                <div id="iguide-filler"></div>
+                <div id="iguide-float"> 
+                    <div class="iguide-link-container">
+                        <a class="iguide-isu" href="http://illinoisstate.edu/?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">IllinoisState.edu</a>
+                        <span class="iguide-link-divider"></span>
+                        <a class="iguide-link" id="iguide-link-admissions" href="http://admissions.illinoisstate.edu/?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">Admissions</a>
+                        <span class="iguide-link-divider"></span>
+                        <a class="iguide-link" id="iguide-link-map" href="http://maps.illinoisstate.edu/?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">Maps</a>
+                        <span class="iguide-link-divider"></span>
+                        <a class="iguide-link" id="iguide-link-events" href="http://events.illinoisstate.edu/?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">Events</a>
+                        <span class="iguide-link-divider"></span>
+                        <a class="iguide-link" id="iguide-link-employment" href="http://hr.illinoisstate.edu/prospective/jobs.php?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">Employment</a>
+                        <span class="iguide-link-divider"></span>
+                        <a class="iguide-link" id="iguide-link-search" href="http://search.illinoisstate.edu/?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">Search/A-Z</a>
+                    </div>
+                    <span class="iguide-link-divider"></span>
+                    <a id="iguide-my-link" title="My Illinois State" href="http://my.illinoisstate.edu?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">
+                        <img src="http://iguides.illinoisstate.edu/images/my-red-dark.png" alt="My"/></a>
+                    <a id="iguide-mobile-menu" style="display: none;" title="Illinois State Menu" href="#?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">
+                        <img src="//iguides.illinoisstate.edu/cdn/icons/black/24/list1.png" alt="Menu"/></a>
+                </div>
+            </nav>
+
+            <header>
+                <section id="mastleft" style="padding-top: 20px; padding-bottom: 20px;" >
+                    <div id="mastlogo">
+                        <a class="linkhome" href="https://it.illinoisstate.edu/" />
+                        <img src="http://it.illinoisstate.edu/files/structure/logo/wordmark.png" alt="School of IT" />
+                    </div>
+
+                </section>
+            </header>
+
+
+            <div class="panel">
+                <div class="panel-heading" style=" padding-top: 0px;    padding-bottom: 0px;    padding-right: 0px;    padding-left: 0px;">
+                    <div  style="padding-bottom: 2px" class="navbar navbar-inverse ">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#"><img src="http://iguides.illinoisstate.edu/favIcon/favicon.ico" class="img-responsive" alt="" /> </a>
+                        </div>
+                        <div class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav"  id="myTab">
+                                <li class="active">
+                                    <a href="#tab1" data-toggle="tab"><i class="glyphicon glyphicon-list"></i> To Do(s)
+                                        <c:choose>
+                                            <c:when test="#{loginController.toDoModel.status eq 4}">
+                                                -  <h:outputText class="badge" rendered="#{loginController.toDoModel.status eq 4}" value="No new items"/>
+                                            </c:when>
+                                            <c:when test="#{loginController.toDoModel.status eq 2}">
+                                                -  <h:outputText class="badge" value="#{loginController.toDoModel.countItems}" /> 
+                                                -  <h:outputText class="badge" rendered="#{loginController.toDoModel.status eq 2}" value="Not Started"/> 
+                                            </c:when>
+                                            <c:when test="#{loginController.toDoModel.status eq 3}">
+                                                -  <h:outputText class="badge" value="#{loginController.toDoModel.countItems}" /> 
+                                                -  <h:outputText class="badge" rendered="#{loginController.toDoModel.status eq 3}" value="In Progress"/> 
+
+                                            </c:when>
+                                            <c:when test="#{loginController.toDoModel.status eq null}">
+                                                -  <h:outputText class="badge" value="#{loginController.toDoModel.countItems}" /> 
+                                                -  <h:outputText class="badge" rendered="#{loginController.toDoModel.status eq 3}" value="No new items"/> 
+
+                                            </c:when>
+                                        </c:choose>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tab2" data-toggle="tab" onclick="invokePreferences();" ><i class=" glyphicon glyphicon-pencil"></i> Preferences</a>
+                                </li>
+
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Account
+                                        <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">Change Password</a>
+                                        </li>
+                                        <h:form>
+                                            <li>
+                                                <a onclick="logout()"> <h:commandLink action="#{loginController.logoutAction()}" value="Sign Out">
+                                                        <f:actionListener binding="#{preferenceController.logoutAction()}"/>
+                                                    </h:commandLink></a>
+
+                                            </li>
+                                        </h:form>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="panel-body" style="padding-top: 0px;">
+                    <h2 style="margin-top: 0px">Welcome: <h:outputText  styleClass="capitalized" value="#{loginController.profModel.professorName}"/>!</h2>
+
+                    <hr></hr><div class="tab-content">
+
+                        <div class="tab-pane active" style="height: 600px;" id="tab1" >
+                            <h2> <h:outputText value="You have not items to review!" rendered="#{not loginController.hasToDoItems}"></h:outputText>  </h2>
+                            <br/>
+                            <!--Click here to set <a href="#tab2" onclick="invokePreferences(); return false">  preferences</a>
+                            <br/>-->
+                            Click the preferences tab to set your course and day/time preferences 
+                            <h:form rendered="#{loginController.hasToDoItems}">
+
+
+                                <div class="row" id="scheduleButtonDiv">
+                                    <div>
+                                        <font color="red">
+                                            <em>
+                                                <center> <h:outputText id="status" value="#{loginController.statusUpdate}" rendered="#{loginController.statusUpdate != ''}"/>
+                                                </center>
+                                            </em>
+                                        </font>
+                                    </div>
+                                    <div class="col-sm-3 col col-md-offset-1 col-sm-3">
+                                    </div>
+                                    <div class="col-sm-3 col col-sm-3">
+                                        <div class="thumbnail">
+
+                                            <div class="caption">
+                                                <h3>To Do Item(s)</h3>
+                                                <p>Click here to review </p>
+                                                <div align="right">
+                                                    <input type="button" class="btn btn-primary" value="View/hide Schedule" onclick="showScheduleDiv();"></input>
+                                                    <input type="button" class="btn btn-primary" value="Load Schedule" onclick="invokeGetSchedule();"></input>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 col col-sm-3">
+                                    </div>
+                                </div>
+
+
+                            </h:form>
+
+                            <div id="scheduleDiv" style="display: none">
+                                <h:form >
+                                    <div>
+                                        <font color="red">
+                                            <em>
+                                                <h:outputText rendered="#{loginController.toDoModel.status eq 2}" value="Task Status : Not Started \n"/> 
+                                                <h:outputText rendered="#{loginController.toDoModel.status eq 3}" value="Task Status : In Progress \n"/> 
+                                                <h:outputText rendered="#{loginController.toDoModel.status eq 4}" value="You have no new items \n"/>
+                                                <h:outputText value="#{loginController.statusUpdate}" rendered="#{loginController.statusUpdate != ''}"/>
+                                            </em>
+                                        </font>
+                                    </div>
+                                    <hr/>
+
+                                    <!--                                                                        <h:form id="changeReportViewForm" class="form-horizontal">
+                                                                                                                <div class="form-group">
+                                                                                                                    <label class="control-label col-sm-1" for="reportTypeId">View As: </label>
+                                                                                                                    <div class="col-sm-1">
+                                                                                                                        <h:selectOneMenu style="width: 195px; height: 30px" id="reportTypeId" onchange="submitForm()">
+                                                                                                                            <f:selectItem itemLabel="Course-Section" itemValue="Course-Section"/>
+                                                                                                                            <f:selectItem itemLabel="Instructor" itemValue="Instructor"/>
+                                                                                                                            <f:selectItem itemLabel="TimeTable" itemValue="TimeTable"/>
+                                                                                                                            <f:selectItem itemLabel="Classroom" itemValue="Classroom"/>
+                                                                                                                        </h:selectOneMenu>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </h:form>-->
+
+                                    <br/><br/>
+
+                                    <div class="panel-heading" style=" padding-top: 0px;    padding-bottom: 0px;    padding-right: 0px;    padding-left: 0px;">
+                                        <div  style="padding-bottom: 2px" class="navbar">
+                                            <div class="navbar-header">
+                                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                                    <span class="sr-only">Toggle navigation</span>
+                                                    <span class="icon-bar"></span>
+                                                    <span class="icon-bar"></span>
+                                                    <span class="icon-bar"></span>
+                                                </button>
+                                                <a class="navbar-brand" href="#">View Schedule As: </a>
+                                            </div>
+                                            <input type="hidden" name="currentTab" value="0"/>
+                                            <div id="viewTabs" class="collapse navbar-collapse">
+                                                <ul class="nav navbar-nav" id="myViewTab">
+                                                    <li class="active">
+                                                        <a href="#viewtab1" data-toggle="tab"> Course-Section</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#viewtab2" data-toggle="tab"> Instructor</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#viewtab3" data-toggle="tab"> Time Table</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#viewtab4" data-toggle="tab"> M - W - F</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#viewtab5" data-toggle="tab"> T - R</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="panel-body">
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" style="height: auto;" id="viewtab1"><br/>
+                                                <h4><center><strong>Course-Section View</strong></center></h4>
+                                                <h:dataTable value="#{scheduleController.scheduleRows}" id="scheduleTable" border="1" var="rows" styleClass="table table-striped">
+                                                    <f:facet name="header">
+                                                        Last Updated on: 
+                                                        <h:outputText  styleClass="capitalized" value="#{scheduleController.scheduleModel.lastUpdtTS}"/>
+                                                    </f:facet>
+                                                    <h:column>    				
+                                                        <f:facet name="header">Course</f:facet>    				
+                                                            #{rows.courseCode}
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">Section</f:facet>
+                                                            #{rows.courseSection}
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">Instructor</f:facet>
+                                                            #{rows.professor}
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">Days</f:facet>
+                                                            #{rows.days}
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">Time</f:facet>
+                                                            #{rows.classTime}
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">Classroom</f:facet>
+                                                            #{rows.rooms}
+                                                    </h:column>
+                                                </h:dataTable>
+                                            </div>
+                                            <div class="tab-pane" style="height: auto;" id="viewtab2">
+                                                <h4><center><strong>Instructor View</strong></center></h4>
+                                                <table class="table table-striped table-bordered" id="listb" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Instructor</th>
+                                                            <th>Course</th>
+                                                            <th>Section</th>
+                                                            <th>Days</th>
+                                                            <th>Time</th>
+                                                            <th>ClassRoom</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ui:repeat value="#{scheduleController.reportList2}" var="list2">
+                                                            <tr>
+                                                                <td>#{list2.professorName}</td>
+                                                                <td>#{list2.course_code}</td>
+                                                                <td>#{list2.section_number}</td>
+                                                                <td>#{list2.days}</td>
+                                                                <td>#{list2.classTime}</td>
+                                                                <td>#{list2.roomName}</td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="tab-pane" style="height: auto;" id="viewtab3">
+                                                <h4><center><strong>Time Table View</strong></center></h4>
+                                                <table class="table table-striped table-bordered" id="listc" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Days</th>
+                                                            <th>Time</th>
+                                                            <th>Course</th>
+                                                            <th>Section</th>
+                                                            <th>Instructor</th>
+                                                            <th>ClassRoom</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ui:repeat value="#{scheduleController.reportList3}" var="list3">
+                                                            <tr>
+                                                                <td>#{list3.days}</td>
+                                                                <td>#{list3.classTime}</td>                                                
+                                                                <td>#{list3.course_code}</td>
+                                                                <td>#{list3.section_number}</td>
+                                                                <td>#{list3.professorName}</td>
+                                                                <td>#{list3.roomName}</td>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="tab-pane" style="height: auto;" id="viewtab4">
+                                                <h4><center><strong>Monday-Wednesday-Friday Classes</strong></center></h4><br/>
+                                                <h4><center>Lecture Room Sessions</center></h4>
+                                                <table class="table table-striped table-bordered" id="listd" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Class Time</th>
+                                                            <ui:repeat value="#{scheduleController.lectureList}" var="listh1">
+                                                                <th>#{listh1.toString()}</th>
+                                                            </ui:repeat>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ui:repeat value="#{scheduleController.mwReportList}" var="list4">
+                                                            <tr>
+                                                                <td><h:outputText escape="false" value="#{list4.timeString}"/></td>
+                                                                <ui:repeat value="#{scheduleController.lectureList}" var="listb1">
+                                                                    <td><h:outputText escape="false" value="#{list4.infoMap.get(listb1.toString())}"/></td>
+                                                                </ui:repeat>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                                <br/>
+                                                <h4><center>Lab Room Sessions</center></h4>
+                                                <table class="table table-striped table-bordered" id="liste" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Class Time</th>
+                                                            <ui:repeat value="#{scheduleController.labList}" var="listh2">
+                                                                <th>#{listh2.toString()}</th>
+                                                            </ui:repeat>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ui:repeat value="#{scheduleController.mwLabReportList}" var="list5">
+                                                            <tr>
+                                                                <td><h:outputText escape="false" value="#{list5.timeString}"/></td>
+                                                                <ui:repeat value="#{scheduleController.labList}" var="listb2">
+                                                                    <td><h:outputText escape="false" value="#{list5.infoMap.get(listb2.toString())}"/></td>
+                                                                </ui:repeat>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="tab-pane" style="height: auto;" id="viewtab5">
+                                                <h4><center><strong>Tuesday Thursday Classes</strong></center></h4><br/>
+                                                <div style="float: none"><h4><center>Lecture Room Sessions</center></h4></div>
+                                                <table class="table table-striped table-bordered" id="listf" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Class Time</th>
+                                                            <ui:repeat value="#{scheduleController.lectureList}" var="listh3">
+                                                                <th>#{listh3.toString()}</th>
+                                                            </ui:repeat>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ui:repeat value="#{scheduleController.trReportList}" var="list6">
+                                                            <tr>
+                                                                <td><h:outputText escape="false" value="#{list6.timeString}"/></td>
+                                                                <ui:repeat value="#{scheduleController.lectureList}" var="listb3">
+                                                                    <td><h:outputText escape="false" value="#{list6.infoMap.get(listb3.toString())}"/></td>
+                                                                </ui:repeat>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                                <br/>
+                                                <h4><center>Lab Room Sessions</center></h4>
+                                                <table class="table table-striped table-bordered" id="listg" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Class Time</th>
+                                                            <ui:repeat value="#{scheduleController.labList}" var="listh4">
+                                                                <th>#{listh4.toString()}</th>
+                                                            </ui:repeat>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ui:repeat value="#{scheduleController.trLabReportList}" var="list7">
+                                                            <tr>
+                                                                <td><h:outputText escape="false" value="#{list7.timeString}"/></td>
+                                                                <ui:repeat value="#{scheduleController.labList}" var="listb4">
+                                                                    <td><h:outputText escape="false" value="#{list7.infoMap.get(listb4.toString())}"/></td>
+                                                                </ui:repeat>
+                                                            </tr>
+                                                        </ui:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <!-- 1. Course-Section Report Content-->
+                                    <div id="Course-Section" class="sel">
+
+                                    </div>
+
+                                    <!-- 2. Instructor Report Content-->
+                                    <div id="Instructor" class="sel">
+
+                                    </div>
+
+                                    <!-- 3. TimeTable Report Content-->
+                                    <div id="TimeTable" class="sel">
+
+                                    </div>
+                                    <!-- 4. Classroom Report Content-->
+                                    <div id="Classroom" class="sel">
+
+                                        <!--M-W-F Classes -->
+                                        <div id="MON-WED-FRI" class ="classSel">
+                                            <br/>
+
+                                        </div>
+                                        <!-- T-R Classes -->
+                                        <div id="TUE-THU" class ="classSel">
+                                            <br/>
+
+                                        </div>
+
+
+                                    </div>
+                                    <center>
+                                        <!-- Textarea -->
+                                        <div class="form-group" id="reviewCommentDiv">
+                                            <label class="col-md-4 control-label" for="textarea">Comments</label>
+                                            <div class="col-md-4">                     
+                                                <h:form id="addReviewCommentForm">
+                                                    <h:inputTextarea class="form-control" id="reviewComment" value="#{loginController.reviewCommentModel.commentText}" >
+                                                    </h:inputTextarea>
+
+                                                    <br/><br/>
+                                                    <h:commandButton class="btn btn-success" value="Submit Comments" action="#{loginController.submitReviewCommentsAction()}" rendered="#{not courseController.editable}">
+                                                        <f:actionListener binding="#{loginController.updateToDoStatus(4)}"/>
+                                                    </h:commandButton>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="button" class="btn btn-warning" value="Cancel" onclick="hideScheduleDiv();" />
+
+                                                </h:form>
+                                            </div>
+                                        </div>
+                                        <h:commandButton class="getSchedule" style="display:none;" value="" action="#{scheduleController.getSchedule()}">
+                                            <f:actionListener binding="#{loginController.updateToDoStatus(3)}" rendered="#{loginController.hasToDoItems}"/>
+                                        </h:commandButton>
+
+                                        <h:commandButton class="checkPreferences" style="display:none;" value="" action="#{preferenceController.getDayPrefExists()}">
+                                        </h:commandButton>
+                                        <h:commandButton class="getPreferences" style="display:none;" value="" action="#{preferenceController.getDayPreferences()}">
+                                            <f:actionListener binding="#{preferenceController.getCoursePreferences()}"/>
+                                        </h:commandButton>
+                                    </center>
+                                </h:form>
+                            </div>
+
+                        </div>
+
+
+
+
+
+
+
+                        <div class="tab-pane"  id="tab2">
+                            <center><h3><strong>Update Preferences 
+                                        <small> 
+                                            <h:outputText value="Last updated on: #{preferenceController.dayPreferenceBean.lastUpdtTS}" rendered="#{preferenceController.dayPreferenceBean.lastUpdtTS != ''}"/>
+                                            <h:outputText value="Last updated on: - - " rendered="#{(preferenceController.dayPreferenceBean.lastUpdtTS == '') and (not preferenceController.hasPreferences)}"/>
+                                        </small>
+                                    </strong></h3></center>
+                            <div class="alert alert-info" role="alert">
+                                One of the sources of information for making teaching assignments is the attached form indicating which courses you are interested in teaching, either now or in the future.  In order to better understand your teaching interests and abilities, I ask that you to take the time to fill out this form.<br/><br/>
+
+                                While course offerings and instructor availability change, we will not always be able to accommodate your preferences.  However, we will take them into consideration as much as possible.<br/><br/>
+
+                                Tenure-line faculty should indicate core courses that they would be comfortable teaching as well as 300 and 400 level courses that are part of the major in their area – i.e. Computer Science faculty should give special attention to indicating their interests and abilities for the courses in the CS program.  If you are interested in teaching a topics class (either graduate or undergraduate) in the next few semesters, please give a brief description of the topic at the end of the form.  Tenure-line faculty need to specify at least 6 courses that they would be willing to teach if needed.
+
+
+                            </div>
+
+                            <c:if test="#{preferenceController.hasPreferences}">
+                                <!-- Add/update Course pref-->
+                                <div id="coursePrefDiv">
+
+                                    <div>
+                                        <font color="red">
+                                            <em>
+                                                <h:outputText value="#{preferenceController.statusUpdate}" rendered="#{preferenceController.statusUpdate != ''}"/>
+                                            </em>
+                                        </font>
+                                    </div>
+                                    <h2>Course Preference <a class="top" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Tooltip on top"><span class="glyphicon glyphicon-info-sign" ></span></a></h2>
+                                    <div class="alert alert-warning" role="alert">      <p>Please fill in the “Interest Level” column in the table to indicate your current level of interest in each course using the scale given.  <br/>
+                                            Code and their meaning are as follows:
+                                            <ol >
+                                                <li>Strong - Strong interest in teaching</li>
+                                                <li>Secondary - Some (secondary) interest in teaching</li>
+                                                <li>Average - Would be willing to teach occasionally when needed</li>
+                                                <li>Not very - Qualified to teach but not an area of real interest</li>
+                                                <li>Never - Strong desire not to be involved in the course</li>
+                                                <li>Not my area - Not qualified or not in my area</li>
+                                            </ol>
+                                        </p></div>
+                                    <h:form>
+                                        <div class="list-group" style="text-align: left">
+                                            <table class="table table-striped table-bordered" id="prefTable">
+                                                <thead>
+                                                    <th>Course Code</th>
+                                                    <th>Lab Needed?</th>
+                                                    <th>Interest Level</th>
+                                                    <th>Comments</th>
+                                                </thead>
+                                                <tbody>
+                                                    <ui:repeat value="#{preferenceController.coursePrefList}" var="course">
+                                                        <tr>
+                                                            <td> 
+                                                                <h:selectOneMenu class="form-control" rendered="#{preferenceController.editable}" value="#{course.courseId}">
+                                                                    <f:selectItems value="#{preferenceController.coursePrefList}" var="c"
+                                                                                   itemLabel="#{c.courseCode} - #{c.courseName}" itemValue="#{c.courseId}" />
+                                                                </h:selectOneMenu>
+                                                                <h:outputText value="#{course.courseCode} - #{course.courseName}" rendered="#{not preferenceController.editable}"/>
+                                                            </td>
+
+
+                                                            <td>  
+                                                                <h:selectOneMenu class="form-control" rendered="#{preferenceController.editable}" value="#{course.labNeeded}">
+                                                                    <f:selectItem itemLabel="Yes" itemValue="1"/>
+                                                                    <f:selectItem itemLabel="No" itemValue="0"/>
+                                                                </h:selectOneMenu>
+                                                                <h:outputText class="badge" rendered="#{(course.labNeeded == 1) and (not preferenceController.editable)}" value="Yes"/> 
+                                                                <h:outputText class="badge" rendered="#{(course.labNeeded == 0) and (not preferenceController.editable)}" value="No"/>
+
+                                                            </td>
+
+                                                            <td> 
+                                                                <h:selectOneMenu class="form-control" rendered="#{preferenceController.editable}" value="#{course.interestLevel}">
+                                                                    <f:selectItem itemLabel="Strong" itemValue="1"/>
+                                                                    <f:selectItem itemLabel="Secondary" itemValue="2"/>
+                                                                    <f:selectItem itemLabel="Average" itemValue="3"/>
+                                                                    <f:selectItem itemLabel="Not very" itemValue="4"/>
+                                                                    <f:selectItem itemLabel="Never" itemValue="5"/>
+                                                                    <f:selectItem itemLabel="Not my area" itemValue=""/>
+                                                                </h:selectOneMenu>
+
+                                                                <h:outputText class="badge" rendered="#{(course.interestLevel == 0) and (not preferenceController.editable)}" value="Not my area"/>
+                                                                <h:outputText class="badge" rendered="#{(course.interestLevel == 1) and (not preferenceController.editable)}" value="Strong"/>
+                                                                <h:outputText class="badge" rendered="#{(course.interestLevel == 2) and (not preferenceController.editable)}" value="Secondary"/>
+                                                                <h:outputText class="badge" rendered="#{(course.interestLevel == 3) and (not preferenceController.editable)}" value="Average"/>
+                                                                <h:outputText class="badge" rendered="#{(course.interestLevel == 4) and (not preferenceController.editable)}" value="Not very"/>
+                                                                <h:outputText class="badge" rendered="#{(course.interestLevel == 5) and (not preferenceController.editable)}" value="Never"/>
+
+                                                            </td>
+
+                                                            <td style="margin-top: 0px;">  
+                                                                <h:inputText class="form-control" id="comments" value="#{course.comments}" rendered="#{preferenceController.editable}"/>
+                                                                <h:outputText value="#{course.comments}" rendered="#{not preferenceController.editable}"/>
+                                                            </td>
+                                                        </tr>
+
+                                                    </ui:repeat>
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+                                        <p class="alert alert-warning" role="alert">
+                                            Please indicate your preferred scheduling as far as days to each.  If you indicate both TR and MW, I will assume that you want a 2-day a week schedule, but don’t care which days.  If you select MWTR, I will assume that you want a combination of MW and TR classes.</p>
+
+                                        <h2><h:outputLabel value="Days preferred:"/> </h2>
+                                        <h:selectManyCheckbox class="form-control" rendered="#{preferenceController.editable}" value="#{preferenceController.daysArray}">
+                                            <f:selectItem  class="checkbox-inline"  id="MWF" itemLabel="MWF" itemValue="MWF"/>
+                                            <f:selectItem class="checkbox-inline"  id="TR" itemLabel="TR" itemValue="TR"/>
+                                            <f:selectItem  class="checkbox-inline" id="MW" itemLabel="MW" itemValue="MW" />
+                                            <f:selectItem class="checkbox-inline"  id="MWTR" itemLabel="MWTR" itemValue="MWTR" />
+                                        </h:selectManyCheckbox>
+
+                                        <h2><span class="label label-default"><h:outputText  rendered="#{not preferenceController.editable}" value="#{preferenceController.dayPreferenceBean.days}"/></span></h2>
+                                        <h2><span class="label label-default"><h:outputText  rendered="#{(preferenceController.dayPreferenceBean.days eq null)}" value="None"/></span></h2>
+
+                                        <h2><h:outputLabel value="What are your preferred times?" /></h2> 
+
+                                        <h2><h:outputText class="label label-default" rendered="#{not preferenceController.editable}" value="#{preferenceController.dayPreferenceBean.preferredTime}"/> </h2>
+                                        <div class="form-inline">
+                                            <div class="form-group">   
+                                                <h:outputLabel value="From" rendered="#{preferenceController.editable}"/>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <h:selectOneMenu value="#{preferenceController.dayPreferenceBean.fromHour}" style="width:75px;" class="form-control" rendered="#{preferenceController.editable}">
+                                                    <f:selectItems value="#{scheduleController.findHours()}" var="fromHour" itemValue="#{fromHour}" itemLabel="#{fromHour}"/>
+                                                </h:selectOneMenu>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <h:selectOneMenu value="#{preferenceController.dayPreferenceBean.fromMinute}" style="width:75px;" class="form-control" rendered="#{preferenceController.editable}">
+                                                    <f:selectItems value="#{scheduleController.findMinutes()}" var="fromMinute" itemValue="#{fromMinute}" itemLabel="#{fromMinute}"/>
+                                                </h:selectOneMenu>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </div>
+                                            <div class="form-group">
+                                                <h:outputLabel value="To" rendered="#{preferenceController.editable}"/>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <h:selectOneMenu value="#{preferenceController.dayPreferenceBean.toHour}" style="width:75px;" class="form-control" rendered="#{preferenceController.editable}">
+                                                    <f:selectItems value="#{scheduleController.findHours()}" var="toHour" itemValue="#{toHour}" itemLabel="#{toHour}"/>
+                                                </h:selectOneMenu>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <h:selectOneMenu value="#{preferenceController.dayPreferenceBean.toMinute}" style="width:75px;" class="form-control" rendered="#{preferenceController.editable}">
+                                                    <f:selectItems value="#{scheduleController.findMinutes()}" var="toMinute" itemValue="#{toMinute}" itemLabel="#{toMinute}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <h:selectOneRadio value="#{preferenceController.dayPreferenceBean.toAMPM}" class="form-control" style="width:100px;margin-right: 10px;" rendered="#{preferenceController.editable}">
+                                                <f:selectItem itemValue="AM" itemLabel="AM"></f:selectItem>
+                                                <f:selectItem itemValue="PM" itemLabel="PM"></f:selectItem>
+                                            </h:selectOneRadio>
+
+                                        </div>
+                                        <h2>   <h:outputLabel value="Comments, if any"/></h2>
+                                        <h:inputTextarea class="form-control" id="finalComments" rendered="#{preferenceController.editable}" value="#{preferenceController.dayPreferenceBean.finalComments}" >
+                                        </h:inputTextarea>
+                                        <h2><h:outputText  class="label label-default" rendered="#{not preferenceController.editable}" value="#{preferenceController.dayPreferenceBean.finalComments}"/> </h2>
+                                        <br/>
+
+                                        <div class="alert alert-warning" role="alert"> Describe topic(s) you would be interested in teaching and indicate level of offering - Graduate (400 level) or Undergraduate (300 level)
+                                            Ex. Games Development
+                                        </div>
+                                        <h2>   <h:outputLabel value="Topic Interests" /></h2>
+                                        <h:inputTextarea class="form-control" id="interests" rendered="#{preferenceController.editable}" value="#{preferenceController.dayPreferenceBean.otherInterests}" >
+                                        </h:inputTextarea>
+                                        <h2> <h:outputText  class="label label-default" rendered="#{not preferenceController.editable}" value="#{preferenceController.dayPreferenceBean.otherInterests}"/> </h2>
+
+                                        <center>
+
+                                            <h:commandButton class="btn btn-success  btn-lg" value="Save" action="#{preferenceController.saveAction}" rendered="#{preferenceController.editable}">
+                                            </h:commandButton>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <h:commandButton class="btn btn-danger  btn-lg" value="Edit Preferences" action="#{preferenceController.editAction}" rendered="#{not preferenceController.editable}">
+                                            </h:commandButton>
+                                            <h:commandButton class="btn btn-warning  btn-lg" value="Cancel Edit" action="#{preferenceController.stopEditAction}" rendered="#{preferenceController.editable}">
+                                            </h:commandButton>
+                                        </center>
+
+
+
+                                    </h:form>
+                                </div>
+
+
+
+
+                            </c:if>
+                            <c:if test="#{not preferenceController.hasPreferences}">
+                                <div id="coursePrefDiv">
+                                    <div>
+                                        <font color="red">
+                                            <em>
+                                                <h:outputText value="#{preferenceController.statusUpdate}" rendered="#{preferenceController.statusUpdate != ''}"/>
+                                            </em>
+                                        </font>
+                                    </div>
+                                    <h2>Course Preference <a class="top" title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Tooltip on top"><span class="glyphicon glyphicon-info-sign" ></span></a></h2>
+                                    <div class="alert alert-warning" role="alert">      <p>Please fill in the “Interest Level” column in the table to indicate your current level of interest in each course using the scale given.  <br/>
+                                            Code and their meaning are as follows:
+                                            <ol >
+                                                <li>Strong - Strong interest in teaching</li>
+                                                <li>Secondary - Some (secondary) interest in teaching</li>
+                                                <li>Average - Would be willing to teach occasionally when needed</li>
+                                                <li>Not very - Qualified to teach but not an area of real interest</li>
+                                                <li>Never - Strong desire not to be involved in the course</li>
+                                                <li>Not my area - Not qualified or not in my area</li>
+                                            </ol>
+                                        </p></div>
+                                    <h:form>
+                                        <div class="list-group" style="text-align: left">
+                                            <table class="table table-striped table-bordered" id="prefTable2">
+                                                <thead>
+                                                    <th>Course Code</th>
+                                                    <th>Lab Needed?</th>
+                                                    <th>Interest Level</th>
+                                                    <th>Comments</th>
+                                                </thead>
+                                                <tbody>
+                                                    <ui:repeat value="#{preferenceController.coursePrefList}" var="course">
+                                                        <tr>
+                                                            <td> 
+                                                                <h:selectOneMenu class="form-control" rendered="#{preferenceController.editable}" value="#{course.courseId}">
+                                                                    <f:selectItems value="#{preferenceController.coursePrefList}" var="c"
+                                                                                   itemLabel="#{c.courseCode} - #{c.courseName}" itemValue="#{c.courseId}" />
+                                                                </h:selectOneMenu>
+                                                                <h:outputText value="#{course.courseCode} - #{course.courseName}" rendered="#{not preferenceController.editable}"/>
+                                                            </td>
+
+                                                            <td>  
+                                                                <h:selectOneMenu class="form-control" rendered="#{preferenceController.editable}" value="#{course.labNeeded}">
+                                                                    <f:selectItem itemLabel="Yes" itemValue="1"/>
+                                                                    <f:selectItem itemLabel="No" itemValue="0"/>
+                                                                </h:selectOneMenu>
+                                                                <h:outputText class="badge" rendered="#{(course.labNeeded == 1) and (not preferenceController.editable)}" value="Yes"/> 
+                                                                <h:outputText class="badge" rendered="#{(course.labNeeded == 0) and (not preferenceController.editable)}" value="No"/>
+
+                                                            </td>
+                                                            <td> 
+                                                                <h:selectOneMenu class="form-control" rendered="#{preferenceController.editable}" value="#{course.interestLevel}">
+                                                                    <f:selectItem itemLabel="Strong" itemValue="1"/>
+                                                                    <f:selectItem itemLabel="Secondary" itemValue="2"/>
+                                                                    <f:selectItem itemLabel="Average" itemValue="3"/>
+                                                                    <f:selectItem itemLabel="Not very" itemValue="4"/>
+                                                                    <f:selectItem itemLabel="Never" itemValue="5"/>
+                                                                    <f:selectItem itemLabel="Not my area" itemValue=""/>
+                                                                </h:selectOneMenu>
+
+
+                                                                <h:outputText class="badge" rendered="#{(course.interestLevel == 0) and (not preferenceController.editable)}" value="Not my area"/>
+                                                                <h:outputText class="badge" rendered="#{(course.interestLevel == 1) and (not preferenceController.editable)}" value="Strong"/>
+                                                                <h:outputText class="badge" rendered="#{(course.interestLevel == 2) and (not preferenceController.editable)}" value="Secondary"/>
+                                                                <h:outputText class="badge" rendered="#{(course.interestLevel == 3) and (not preferenceController.editable)}" value="Average"/>
+                                                                <h:outputText class="badge" rendered="#{(course.interestLevel == 4) and (not preferenceController.editable)}" value="Not very"/>
+                                                                <h:outputText class="badge" rendered="#{(course.interestLevel == 5) and (not preferenceController.editable)}" value="Never"/>
+
+
+                                                            </td>
+                                                            <td style="margin-top: 0px;">  
+                                                                <h:inputText class="form-control" id="comments" value="#{course.comments}" rendered="#{preferenceController.editable}"/>
+                                                                <h:outputText value="#{course.comments}" rendered="#{not preferenceController.editable}"/>
+                                                            </td>
+                                                        </tr>
+
+                                                    </ui:repeat>
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+                                        <p class="alert alert-warning" role="alert">
+                                            Please indicate your preferred scheduling as far as days to each.  If you indicate both TR and MW, I will assume that you want a 2-day a week schedule, but don’t care which days.  If you select MWTR, I will assume that you want a combination of MW and TR classes.</p>
+                                        <h2> <h:outputLabel value="Days preferred:"/></h2> 
+                                        <h:selectManyCheckbox class="form-control" rendered="#{preferenceController.editable}" value="#{preferenceController.daysArray}">
+                                            <f:selectItem  class="checkbox-inline"  id="MWF" itemLabel="MWF" itemValue="MWF"/>
+                                            <f:selectItem class="checkbox-inline"  id="TR" itemLabel="TR" itemValue="TR"/>
+                                            <f:selectItem  class="checkbox-inline" id="MW" itemLabel="MW" itemValue="MW" />
+                                            <f:selectItem class="checkbox-inline"  id="MWTR" itemLabel="MWTR" itemValue="MWTR" />
+                                        </h:selectManyCheckbox>
+                                        <h2> <span class="label label-default"><h:outputText  rendered="#{not preferenceController.editable}"  value="#{preferenceController.dayPreferenceBean.days}"/></span></h2>
+                                        <h2> <span class="label label-default"><h:outputText  rendered="#{(preferenceController.dayPreferenceBean.days == '') and (not preferenceController.editable)}"  value="None"/></span></h2>
+
+                                        <h2><h:outputLabel value="What are your preferred times?" /></h2>
+                                        <h2>  <h:outputText class="label label-default" rendered="#{not preferenceController.editable}" value="#{preferenceController.dayPreferenceBean.preferredTime}"/> </h2>
+                                        <h2>  <h:outputText class="label label-default" rendered="#{(preferenceController.dayPreferenceBean.preferredTime == '') and (not preferenceController.editable)}" value="None"/> </h2>
+
+                                        <div class="form-inline">
+                                            <div class="form-group">    
+                                                <h:outputLabel value="From" rendered="#{preferenceController.editable}"/>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <h:selectOneMenu value="#{preferenceController.dayPreferenceBean.fromHour}" style="width:75px;" class="form-control" rendered="#{preferenceController.editable}">
+                                                    <f:selectItems value="#{scheduleController.findHours()}" var="fromHour" itemValue="#{fromHour}" itemLabel="#{fromHour}"/>
+                                                </h:selectOneMenu>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <h:selectOneMenu value="#{preferenceController.dayPreferenceBean.fromMinute}" style="width:75px;" class="form-control" rendered="#{preferenceController.editable}">
+                                                    <f:selectItems value="#{scheduleController.findMinutes()}" var="fromMinute" itemValue="#{fromMinute}" itemLabel="#{fromMinute}"/>
+                                                </h:selectOneMenu>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </div>
+                                            <div class="form-group">
+                                                <h:outputLabel value="To" rendered="#{preferenceController.editable}"/>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <h:selectOneMenu value="#{preferenceController.dayPreferenceBean.toHour}" style="width:75px;" class="form-control" rendered="#{preferenceController.editable}">
+                                                    <f:selectItems value="#{scheduleController.findHours()}" var="toHour" itemValue="#{toHour}" itemLabel="#{toHour}"/>
+                                                </h:selectOneMenu>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <h:selectOneMenu value="#{preferenceController.dayPreferenceBean.toMinute}" style="width:75px;" class="form-control" rendered="#{preferenceController.editable}">
+                                                    <f:selectItems value="#{scheduleController.findMinutes()}" var="toMinute" itemValue="#{toMinute}" itemLabel="#{toMinute}"/>
+                                                </h:selectOneMenu>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </div>
+                                            <h:selectOneRadio value="#{preferenceController.dayPreferenceBean.toAMPM}" style="width:100px;margin-right: 10px;" class="form-control" rendered="#{preferenceController.editable}">
+                                                <f:selectItem itemValue="AM"  itemLabel="AM"></f:selectItem>
+                                                <f:selectItem itemValue="PM" itemLabel="PM"></f:selectItem>
+                                            </h:selectOneRadio>
+                                        </div>
+                                        <h2><h:outputLabel value="Comments, if any" /></h2>
+                                        <h:inputTextarea class="form-control" id="finalComments2" rendered="#{preferenceController.editable}" value="#{preferenceController.dayPreferenceBean.finalComments}" >
+                                        </h:inputTextarea>
+                                        <h2><h:outputText class="label label-default" rendered="#{not preferenceController.editable}" value="#{preferenceController.dayPreferenceBean.finalComments}"/> 
+                                        </h2>
+                                        <h2>  <h:outputText class="label label-default" rendered="#{(preferenceController.dayPreferenceBean.finalComments == '') and (not preferenceController.editable)}" value="None"/> </h2>
+                                        <br/>
+                                        <div class="alert alert-warning" role="alert"> Describe topic(s) you would be interested in teaching and indicate level of offering - Graduate (400 level) or Undergraduate (300 level)
+                                            Ex. Games Development
+                                        </div>
+                                        <h2><h:outputLabel value="Topic Interests" /></h2>
+                                        <h:inputTextarea class="form-control" id="interest2" rendered="#{preferenceController.editable}" value="#{preferenceController.dayPreferenceBean.otherInterests}" >
+                                        </h:inputTextarea>
+                                        <h2> <h:outputText class="label label-default" rendered="#{not preferenceController.editable}" value="#{preferenceController.dayPreferenceBean.otherInterests}"/> 
+                                        </h2>
+                                        <h2>  <h:outputText class="label label-default" rendered="#{(preferenceController.dayPreferenceBean.otherInterests == '') and (not preferenceController.editable)}" value="None"/> </h2>
+
+                                        <center>
+
+                                            <h:commandButton class="btn btn-success  btn-lg" value="Save" action="#{preferenceController.saveAction}" rendered="#{preferenceController.editable}">
+                                            </h:commandButton>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <h:commandButton class="btn btn-danger  btn-lg" value="Edit Preferences" action="#{preferenceController.editAction}" rendered="#{not preferenceController.editable}">
+                                            </h:commandButton>
+                                            <h:commandButton class="btn btn-warning  btn-lg" value="Cancel Edit" action="#{preferenceController.stopEditAction}" rendered="#{preferenceController.editable}">
+                                            </h:commandButton>
+                                        </center>
+
+
+                                    </h:form>
+                                </div>
+
+                            </c:if>
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /navbar -->
+
+            </div>
+        </div>
+
+    </h:body>
+
+</html>

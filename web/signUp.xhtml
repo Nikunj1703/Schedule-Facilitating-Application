@@ -1,0 +1,123 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+    <h:head >
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Faculty Sign Up</title>
+
+        <link rel="shortcut icon" href="http://iguides.illinoisstate.edu/favIcon/favicon.ico" type="image/x-icon"/>
+        <!-- Bootstrap 
+        <link href="css/bootstrap.min.css" rel="stylesheet">-->
+        <link href="./resources/css/custom.css" rel="stylesheet" />
+        <!-- Custom styles for this template -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"  />
+        <!-- Latest compiled and minified JavaScript -->
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" ></script>
+
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" />
+
+        <link rel="stylesheet" type="text/css" href="https://my.illinoisstate.edu/responsive.css?v=2"/>
+        <script>
+        </script>
+
+    </h:head>
+    <h:body style="padding-top: 0px"  id="grad1">
+
+        <div class="container">
+            <nav style="height: 30px;">
+                <script src="//iguides.illinoisstate.edu"> </script>
+                <div id="iguide-filler"></div>
+                <div id="iguide-float"> 
+                    <div class="iguide-link-container">
+                        <a class="iguide-isu" href="http://illinoisstate.edu/?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">IllinoisState.edu</a>
+                        <span class="iguide-link-divider"></span>
+                        <a class="iguide-link" id="iguide-link-admissions" href="http://admissions.illinoisstate.edu/?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">Admissions</a>
+                        <span class="iguide-link-divider"></span>
+                        <a class="iguide-link" id="iguide-link-map" href="http://maps.illinoisstate.edu/?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">Maps</a>
+                        <span class="iguide-link-divider"></span>
+                        <a class="iguide-link" id="iguide-link-events" href="http://events.illinoisstate.edu/?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">Events</a>
+                        <span class="iguide-link-divider"></span>
+                        <a class="iguide-link" id="iguide-link-employment" href="http://hr.illinoisstate.edu/prospective/jobs.php?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">Employment</a>
+                        <span class="iguide-link-divider"></span>
+                        <a class="iguide-link" id="iguide-link-search" href="http://search.illinoisstate.edu/?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">Search/A-Z</a>
+                    </div>
+                    <span class="iguide-link-divider"></span>
+                    <a id="iguide-my-link" title="My Illinois State" href="http://my.illinoisstate.edu?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">
+                        <img src="http://iguides.illinoisstate.edu/images/my-red-dark.png" alt="My"/></a>
+                    <a id="iguide-mobile-menu" style="display: none;" title="Illinois State Menu" href="#?utm_source=my.illinoisstate.edu&amp;utm_medium=iguide&amp;utm_campaign=iguide+usage">
+                        <img src="//iguides.illinoisstate.edu/cdn/icons/black/24/list1.png" alt="Menu"/></a>
+                </div>
+            </nav>
+
+            <header>
+                <section id="mastleft" style="padding-top: 20px; padding-bottom: 20px;" >
+                    <div id="mastlogo">
+                        <a class="linkhome" href="https://it.illinoisstate.edu/" />
+                        <img src="http://it.illinoisstate.edu/files/structure/logo/wordmark.png" alt="School of IT" />
+                    </div>
+
+                </section>
+            </header>
+
+
+            <div  class="row" id="pwd-container">
+                <div class="col-md-3"></div>
+
+                <div class="col-md-6">
+                    <section class="login-form">
+                        <!--   <h:form method="post" action="#" role="login">-->
+                        <h:form class="form" id="loginForm">
+                            <h1><strong><center>Sign Up</center></strong></h1>
+                            <!--<img src="http://iguides.illinoisstate.edu/favIcon/favicon.ico" class="img-responsive" alt="" />  --> 
+                            <img src="http://iguides.illinoisstate.edu/footer/footerReggieGrey.png" class="img-responsive" alt="" />
+
+                            <hr class="colorgraph" />
+
+                            <h:inputText a:placeholder="First Name" label="FirstName" id="firstName" value="#{signUpController.firstName}" class="form-control input-lg" a:autofocus="true" > 	
+                            </h:inputText>
+                            
+                            <h:inputText a:placeholder="Last Name" label="LastName" id="lastName" value="#{signUpController.lastName}" class="form-control input-lg">  
+                            </h:inputText>
+                             
+                            <h:inputText a:placeholder="ULID" label="Username" id="ulid" value="#{signUpController.theModel.ulid}" class="form-control input-lg" a:autofocus="true" > 	
+                            </h:inputText>
+
+                            <h:inputSecret  a:placeholder="Password" label="Password" class="form-control input-lg" redisplay="false" id="password" value="#{signUpController.theModel.password}"> 	
+                            </h:inputSecret> 
+                            
+                            <h:inputSecret  a:placeholder="Confirm Password" label="ConfirmPassword" class="form-control input-lg" redisplay="false" id="confirmPassword" value="#{signUpController.confirmPassword}"> 	
+                            </h:inputSecret> 
+                            
+                            <hr class="colorgraph"/>
+                            <div>
+                                <font color="red">
+                                    <em>
+                                        <h:outputText id="resultStr" value="#{signUpController.signUpValidaton}" /><br/><br/>
+                                    </em>
+                                </font>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-6">
+                                    <h:commandButton id="login" class="btn btn-primary btn-block btn-lg" value="Sign Up" action="#{signUpController.validateSignUp()}"/>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <h:commandButton id="cancel" class="btn btn-warning btn-block btn-lg" value="Cancel" action="login.xhtml"/>
+                                </div>	
+                            </div>
+                            <br/>
+                        </h:form>
+                    </section>  
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
